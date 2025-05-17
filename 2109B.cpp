@@ -1,28 +1,22 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int cutsForDimension(long long d, long long pos) {
-    // Base cuts = floor(log2(d))
-    int baseCuts = (int)floor(log2(d));
-
-    // Check if d is odd (> 2) and pos is the unique middle cell
-    // For example, d=7 => middle=4
-    // If in that exact cell, Fouad can force one more cut
-    if (d > 2 && (d % 2 == 1) && (pos == (d + 1) / 2)) {
-        baseCuts += 1;
+long long cutsForDimension(long long d, long long p) {
+    if (d <= 1) return 0;
+    if (d == 2) return 1;
+    long long base = (long long)floor(log2(d));
+    if ((d % 2 == 1) && (p == (d + 1) / 2) && (d > 2)) {
+        base += 1;
     }
-    return baseCuts;
+    return base;
 }
 
 void solver() {
     long long n, m, a, b;
     cin >> n >> m >> a >> b;
-
-    // Calculate row-cuts + column-cuts
-    int rowCuts = cutsForDimension(n, a);
-    int colCuts = cutsForDimension(m, b);
-
-    cout << (rowCuts + colCuts) << "\n";
+    long long rc = cutsForDimension(n, a);
+    long long cc = cutsForDimension(m, b);
+    cout << (rc + cc) << "\n";
 }
 
 int main() {
