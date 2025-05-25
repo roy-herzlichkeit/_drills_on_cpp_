@@ -1,4 +1,4 @@
-CC = 1859B.cpp
+CC = 1791D.cpp
 CCC = "Commit-VI"
 all:
 	g++ $(CC)
