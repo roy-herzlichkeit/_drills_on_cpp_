@@ -1,5 +1,5 @@
-CC = 1791D.cpp
-CCC = "Commit-VI"
+CC = 2114D.cpp
+CCC = "Commit-VIII"
 all:
 	g++ $(CC)
 	./a.exe
@@ -8,3 +8,6 @@ push:
 	git add .
 	git commit -m $(CCC)
 	git push -u origin main
+CF:
+	touch $(CC)
+	cat template.cpp >> $(CC)

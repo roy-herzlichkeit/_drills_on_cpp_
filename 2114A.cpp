@@ -24,5 +24,13 @@ signed main(void) {
 }
 
 inline static void solver(void) {
-    
+    string s;
+    cin >> s;
+    int n = stoi(s);
+    int root = int(floor(sqrt(n) + 0.5));
+    if (root * root == n) {
+        cout << 0 << ' ' << root << '\n';
+    } else {
+        cout << -1 << '\n';
+    }
 }

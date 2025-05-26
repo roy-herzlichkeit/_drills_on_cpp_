@@ -24,5 +24,20 @@ signed main(void) {
 }
 
 inline static void solver(void) {
-    
+    int n;
+    ll k;
+    string s;
+    cin >> n >> k;
+    cin >> s;
+    int z = 0;
+    for (char c: s) 
+        if (c == '0') 
+            z++;
+    int t = n - z;
+    int D = z - (n / 2);
+    if (k < abs(D) || k > (n / 2) || ((k - D) % 2 != 0)) {
+        cout << "NO\n";
+    } else {
+        cout << "YES\n";
+    }
 }

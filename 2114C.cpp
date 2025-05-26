@@ -24,5 +24,22 @@ signed main(void) {
 }
 
 inline static void solver(void) {
-    
+    int n;
+    cin >> n;
+    vector<ll> a(n);
+    for (int i = 0; i < n; i++) 
+        cin >> a[i];
+    if (n == 0) {
+        cout << 0 << "\n";
+        return;
+    }
+    ll fin = a[0];
+    int res = 1;
+    for (int i = 1; i < n; i++) {
+        if (a[i] >= fin + 2) {
+            res++;
+            fin = a[i];
+        }
+    }
+    cout << res << "\n";
 }
