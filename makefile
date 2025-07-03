@@ -1,5 +1,5 @@
-CC = 1.cpp
-CCC = "Commit-X"
+CC = rand2.cpp
+CCC = "Commit-XI"
 all:
 	g++ $(CC)
 	./a.exe
