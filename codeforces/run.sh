@@ -1,4 +1,4 @@
-x=1474B.cpp
+x=2132C1.cpp
 g++ $x
 ./a.exe
 rm ./a.exe
