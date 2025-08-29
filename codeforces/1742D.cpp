@@ -41,39 +41,28 @@ template<class T> inline T ceil_div(T a, T b){ return (a + b - 1) / b; }
 template<class T> inline void chmin(T &a, T b){ if(b < a) a = b; }
 template<class T> inline void chmax(T &a, T b){ if(b > a) a = b; }
 
+vector<int> pairs[1001];
+
+void precompute() {
+    for(int i = 1; i <= 1000; ++i) 
+        for(int j = 1; j <= 1000; ++j) 
+            if(__gcd(i, j) == 1) 
+                pairs[i].push_back(j);
+}
+
 inline static void solver() {
-    int n; ll k; 
-    cin >> n >> k;
-    vll a(n);
-    for(int i=0;i<n;++i) cin >> a[i];
-
-    if(n == 1){
-        unsigned long long ans = (unsigned long long)a[0] + (unsigned long long)k * (unsigned long long)k;
-        cout << ans << '\n';
-        return;
+    int n; cin >> n;
+    vector<int> id[1001];
+    for(int i = 1; i <= n; ++i) {
+        int x; cin >> x;
+        id[x].push_back(i);
     }
-
-    // Pick smallest prime p (<=47) not dividing k; one always exists since 47# > 1e9.
-    static const int primes[] = {2,3,5,7,11,13,17,19,23,29,31,37,41,43,47};
-    int p = 2; // default
-    for(int pr: primes){ if(k % pr != 0){ p = pr; break; } }
-    // Ensure p-1 <= k (since p <= k+1 automatically). If p-1 > k (can only happen if k < p-1 but then p > k+1) so safe.
-
-    // Modular inverse of k mod p (since p does not divide k).
-    ll kmod = k % p;
-    auto mod_pow = [&](ll b, ll e)->ll{
-        ll r=1%p; b%=p; while(e){ if(e&1) r = (r*b)%p; b = (b*b)%p; e >>=1; } return r; };
-    ll invk = mod_pow(kmod, p-2); // Fermat's little theorem
-
-    // Build final array: choose m_i so that a_i + k*m_i ≡ 0 (mod p); m_i in [0, p-1] and p-1 <= k
-    for(int i=0;i<n;++i){
-        ll need = (p - (a[i] % p)) % p; // need ≡ k*m_i (mod p)
-        ll m = (need * invk) % p;       // minimal m satisfying congruence
-        // m <= p-1 <= k
-    unsigned long long val = (unsigned long long)k * (unsigned long long)m + (unsigned long long)a[i];
-    // k,m <= 1e9 so product <= 1e18 fits in 64-bit
-    cout << val << (i+1==n?'\n':' ');
-    }
+    int ans = -1;
+    for(int i = 1; i <= 1000; ++i) 
+        for(int j: pairs[i]) 
+            if(!id[i].empty() && !id[j].empty()) 
+                ans = max(ans, id[i].back() + id[j].back());
+    cout << ans << "\n";
 }
 
 int main() {
@@ -81,7 +70,7 @@ int main() {
     #ifdef LOCAL
         freopen("a.in", "r", stdin);
     #endif
-
+    precompute();
     int T = 1;
     if(!(cin >> T)) return 0;
     while(T--) solver();

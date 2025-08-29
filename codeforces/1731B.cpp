@@ -42,38 +42,11 @@ template<class T> inline void chmin(T &a, T b){ if(b < a) a = b; }
 template<class T> inline void chmax(T &a, T b){ if(b > a) a = b; }
 
 inline static void solver() {
-    int n; ll k; 
-    cin >> n >> k;
-    vll a(n);
-    for(int i=0;i<n;++i) cin >> a[i];
-
-    if(n == 1){
-        unsigned long long ans = (unsigned long long)a[0] + (unsigned long long)k * (unsigned long long)k;
-        cout << ans << '\n';
+    unsigned long long n, MOD = 1e9 * 1ull + 7ull;
+    if (!(cin >> n)) 
         return;
-    }
-
-    // Pick smallest prime p (<=47) not dividing k; one always exists since 47# > 1e9.
-    static const int primes[] = {2,3,5,7,11,13,17,19,23,29,31,37,41,43,47};
-    int p = 2; // default
-    for(int pr: primes){ if(k % pr != 0){ p = pr; break; } }
-    // Ensure p-1 <= k (since p <= k+1 automatically). If p-1 > k (can only happen if k < p-1 but then p > k+1) so safe.
-
-    // Modular inverse of k mod p (since p does not divide k).
-    ll kmod = k % p;
-    auto mod_pow = [&](ll b, ll e)->ll{
-        ll r=1%p; b%=p; while(e){ if(e&1) r = (r*b)%p; b = (b*b)%p; e >>=1; } return r; };
-    ll invk = mod_pow(kmod, p-2); // Fermat's little theorem
-
-    // Build final array: choose m_i so that a_i + k*m_i ≡ 0 (mod p); m_i in [0, p-1] and p-1 <= k
-    for(int i=0;i<n;++i){
-        ll need = (p - (a[i] % p)) % p; // need ≡ k*m_i (mod p)
-        ll m = (need * invk) % p;       // minimal m satisfying congruence
-        // m <= p-1 <= k
-    unsigned long long val = (unsigned long long)k * (unsigned long long)m + (unsigned long long)a[i];
-    // k,m <= 1e9 so product <= 1e18 fits in 64-bit
-    cout << val << (i+1==n?'\n':' ');
-    }
+    unsigned long long res = ((((n * (n + 1)) % MOD) * (4 * n-1)) % MOD * 337) % MOD;
+    cout << res << endl;
 }
 
 int main() {
