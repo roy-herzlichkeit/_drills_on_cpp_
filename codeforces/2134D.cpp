@@ -43,26 +43,56 @@ template<class T> inline void chmin(T &a, T b){ if(b < a) a = b; }
 template<class T> inline void chmax(T &a, T b){ if(b > a) a = b; }
 
 inline static void solver() {
-    ll n;
+    int n;
     cin >> n;
-    vector<ll> arr(n);
-    for (ll &x : arr) cin >> x;
-
-    vector<ll> b(n + 1, 0);
-    ll ops = 0;
-
-    for (ll i = 0; i < n; i += 2) {
-        ll curr = arr[i];
-        if (i >= 2)
-            curr = min(curr, arr[i - 1] - b[i - 2]);
-        if (i + 1 < n)
-            curr = min(curr, arr[i + 1]);
-        if (curr < 0) 
-            curr = 0;   
-        b[i] = curr;
-        ops += (arr[i] - b[i]);
+    vector<vector<int>> adj(n);
+    for (int i = 0; i < n - 1; i++) {
+        int u, v;
+        cin >> u >> v;
+        --u, --v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
     }
-    cout << ops << '\n';
+    vector<int> dist(n), parent(n);
+    function<void(int, int)> dfs = [&](int curr, int prev) {
+        parent[curr] = prev;
+        for (int& children : adj[curr]) {
+            if (children != prev) {
+                dist[children] = dist[curr] + 1;
+                dfs(children, curr);
+            }
+        }   
+    };
+    dist[0] = 0;
+    dfs(0, -1);
+    int root = max_element(dist.begin(), dist.end()) - dist.begin();
+    dist[root] = 0;
+    dfs(root, -1);
+    root = max_element(dist.begin(), dist.end()) - dist.begin();
+    if (dist[root] == n - 1) {
+        cout << -1 << endl;
+    } else {
+        vector<bool> diameter(n, false);
+        int curr = root;
+        while (curr != -1) {
+            diameter[curr] = true;
+            curr = parent[curr];
+        }
+        int a, b, c;
+        a = b = c = -1;
+        for (int u = 0; u < n; u++) {
+            for (int v : adj[u]) {
+                if (diameter[u] && !diameter[v]) {
+                    a = parent[u], b = u, c = v;
+                    break;
+                }
+            }
+            if (a != -1) {
+                break;
+            }
+        }
+        cout << a + 1 << " " << b + 1 << " " << c + 1 << "\n";
+    }
 }
 
 int main() {
