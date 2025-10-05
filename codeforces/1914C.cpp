@@ -45,37 +45,17 @@ template<class T> inline void chmax(T &a, T b){ if(b > a) a = b; }
 inline static void solver() {
     int n, k;
     cin >> n >> k;
-    vector<int> a(n), b(n);
-    vector<pair<int, pair<int, int>>> arr;
-    for (int i = 0; i < n; i++) {
-        cin >> a[i];
-        arr.push_back({a[i], {i, 1}});
-    }
-    for (int i = 0; i < n; i++) {
-        cin >> b[i];
-        arr.push_back({b[i], {i, 0}});
-    }
-    sort(arr.begin(), arr.end(), [] (const auto& lhs, const auto& rhs) {
-        if (lhs.first != rhs.first)
-            return lhs.first > rhs.first;   
-        if (lhs.second.second != rhs.second.second)
-            return lhs.second.second > rhs.second.second;  
-        return lhs.second.first < rhs.second.first; 
-    });
-    vector<bool> unlocked(n, false);
-    ll res = 0;
-    for (int i = 0; i < k; i++) {
-        if (arr[i].second.second == 0) {
-            if (unlocked[i]) {
-                res += (k - i) * arr[i].first;
-            } else {
-                int id = arr[i].second.first;
-                res += a[id] + (k - i) * b[id];
-            }
-            break;
-        }
-        res += arr[i].first;
-        unlocked[arr[i].second.first] = true;
+    vll a(n, 0), b(n, 0);
+    for (ll& i : a) 
+        cin >> i;
+    for (ll& i : b)
+        cin >> i;
+    ll S = 0ll, res = 0;
+    ll bmax = 0;
+    for (int i = 0, l = min(n, k); i < l; i++) {
+        bmax = max(bmax, b[i]);
+        S += a[i];
+        res = max(res, S + bmax * (k - (i + 1)));
     }
     cout << res << endl;
 }
