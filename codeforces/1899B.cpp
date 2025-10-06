@@ -42,31 +42,37 @@ template<class T> inline T ceil_div(T a, T b){ return (a + b - 1) / b; }
 template<class T> inline void chmin(T &a, T b){ if(b < a) a = b; }
 template<class T> inline void chmax(T &a, T b){ if(b > a) a = b; }
 
+vi getFactors(int n) {
+    vi res;
+    for (int i = 1; i <= n; i++) 
+        if (n % i == 0)
+            res.push_back(i);
+    return res;
+}
+
 inline static void solver() {
     int n;
-    ll res = LLONG_MIN;
     cin >> n;
-    vi arr(n);
-    for (int& it : arr) {
+    vi arr(n, 0);
+    vll prefix(n, 0);
+    for (int& it : arr) 
         cin >> it;
-        res = max<ll>(res, it);
-    }
-
-    if (res < 0) {
-        cout << res << endl;
-        return;
-    }
-
-    ll curr = max<ll>(0ll, arr[0]);
-    for (int j = 1; j < n; j++) {
-        if (!((arr[j - 1] & 1) ^ (arr[j] & 1))) 
-            curr = max<ll>(0ll, arr[j]);
-        else 
-            curr = max<ll>(0ll, curr + arr[j]);
-        res = max<ll>(res, curr);
+    prefix[0] = arr[0];
+    for (int i = 1; i < n; i++)
+        prefix[i] = prefix[i - 1] + arr[i];
+    vi factors = getFactors(n);
+    ll res = LLONG_MIN;
+    for (const int& factor : factors) {
+        ll largest = LLONG_MIN, smallest = LLONG_MAX;
+        for (int i = 0; i < n; i += factor) {
+            ll tmp = prefix[i + factor - 1] - (i > 0 ? prefix[i - 1] : 0);
+            largest = max<ll>(largest, tmp);
+            smallest = min<ll>(smallest, tmp);
+        } 
+        res = max<ll>(largest - smallest, res);
     }
     cout << res << endl;
-} 
+}
 
 int main() {
     fast_io();
