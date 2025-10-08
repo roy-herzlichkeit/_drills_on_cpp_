@@ -43,34 +43,23 @@ template<class T> inline void chmin(T &a, T b){ if(b < a) a = b; }
 template<class T> inline void chmax(T &a, T b){ if(b > a) a = b; }
 
 inline static void solver() {
-    int n, k;
-    cin >> n >> k;
-    vi a(n);
-    ll S = 0;
-    for (int& it : a) {
-        cin >> it;
-        S += it;
+    int n, x;
+    cin >> n >> x;
+    int s = 0;
+    vector<int> a(n);
+    for (int i = 0; i < 3; i++) {
+        for (int& it : a)
+            cin >> it;
+        for (const int& it : a) {
+            if ((x | it) != x)
+                break;
+            s |= it;
+        }
     }
-
-    sort(a.begin(), a.end());
-    
-    vll prefixSmall(2 * k + 1, 0);
-    for (int i = 0; i < min(2 * k, n); i++) {
-        prefixSmall[i + 1] = prefixSmall[i] + a[i];
-    }
-    
-    vll prefixLarge(k + 1, 0);
-    for (int i = 0; i < min(k, n); i++) {
-        prefixLarge[i + 1] = prefixLarge[i] + a[n - 1 - i];
-    }
-    
-    ll res = 0;
-    for (int i = 0; i <= k; i++) {
-        ll curr = S - prefixSmall[2 * i] - prefixLarge[k - i];
-        res = max(res, curr);
-    }
-    
-    cout << res << endl;
+    if (s == x)
+        cout << "YES\n";
+    else
+        cout << "NO\n";
 }
 
 int main() {

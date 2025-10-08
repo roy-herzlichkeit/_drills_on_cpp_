@@ -7,6 +7,7 @@ using ull = unsigned long long;
 using pii = pair<int,int>;
 using vi = vector<int>;
 using vll = vector<ll>;
+using vull = vector<ull>;
 
 static inline void fast_io() {
     ios::sync_with_stdio(false);
@@ -43,34 +44,30 @@ template<class T> inline void chmin(T &a, T b){ if(b < a) a = b; }
 template<class T> inline void chmax(T &a, T b){ if(b > a) a = b; }
 
 inline static void solver() {
-    int n, k;
-    cin >> n >> k;
-    vi a(n);
-    ll S = 0;
-    for (int& it : a) {
+    ull n, c;
+    cin >> n >> c;
+    vull a(n);
+    for (ull& it : a) {
         cin >> it;
-        S += it;
     }
-
-    sort(a.begin(), a.end());
-    
-    vll prefixSmall(2 * k + 1, 0);
-    for (int i = 0; i < min(2 * k, n); i++) {
-        prefixSmall[i + 1] = prefixSmall[i] + a[i];
+    ull low = 1, high = 1e9;
+    while (low <= high) {
+        ull mid = low + (high - low) / 2;
+        ull val = 0;
+        for (int i = 0; i < n; i++) {
+            val += (a[i] + 2 * mid) * (a[i] + 2 * mid);
+            if (val > c) 
+                break;
+        }
+        if (val == c) {
+            cout << mid << "\n";
+            return;
+        }
+        if (val > c) 
+            high = mid - 1;
+        else 
+            low = mid + 1;
     }
-    
-    vll prefixLarge(k + 1, 0);
-    for (int i = 0; i < min(k, n); i++) {
-        prefixLarge[i + 1] = prefixLarge[i] + a[n - 1 - i];
-    }
-    
-    ll res = 0;
-    for (int i = 0; i <= k; i++) {
-        ll curr = S - prefixSmall[2 * i] - prefixLarge[k - i];
-        res = max(res, curr);
-    }
-    
-    cout << res << endl;
 }
 
 int main() {
