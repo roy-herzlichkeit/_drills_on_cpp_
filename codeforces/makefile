@@ -1,12 +1,13 @@
-CC = 1821B.cpp
-CCC = "Commit-XXIX"
+CC = 1669F.cpp
+CCC = "Commit-XXX"
 all:
 	g++ $(CC)
 	./a.exe
 	rm ./a.exe
-push:
+commit:
 	git add .
 	git commit -m $(CCC)
+push:
 	git push -u origin main
 CF:
 	cat template.cpp >> $(CC)
