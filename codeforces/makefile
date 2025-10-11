@@ -1,5 +1,5 @@
 CC = 1618C.cpp
-CCC = "Commit-XXXI"
+CCC = "Commit-XXXIII"
 all:
 	g++ $(CC)
 	./a.exe
