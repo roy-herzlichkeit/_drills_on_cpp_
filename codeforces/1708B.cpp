@@ -43,17 +43,25 @@ template<class T> inline void chmin(T &a, T b){ if(b < a) a = b; }
 template<class T> inline void chmax(T &a, T b){ if(b > a) a = b; }
 
 inline static void solver() {
-    int n, l, r;
-    cin >> n >> l >> r;
-    if ((r - l) < (n - 1)) {
-        cout << "NO\n";
-        return;
-    }
-    cout << "YES\n";
-    for (int i = 0; i < n; i++) {
-        cout << (l + (i + n) % n) << " ";
-    }
-    cout << endl;
+	ll n;
+	cin >> n;
+	ll l, r;
+	cin >> l >> r;
+	vector<ll> res;
+
+	for (int i = 1; i <= n; i++) {
+		ll temp = ((l + i - 1) / i) * i;
+		res.push_back(temp);
+		if (temp > r) {
+			cout << "NO" << endl;
+			return;
+		}
+	}
+
+	cout << "YES" << endl;
+	for (auto it : res) 
+		cout << it << " ";
+	cout << endl;
 }
 
 int main() {
