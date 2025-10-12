@@ -46,16 +46,20 @@ inline static void solver() {
     int n;
     cin >> n;
     vi arr(n);
-    ull sum = 0;
-    int low = INT_MAX;
-    for (int& it : arr) {
-        cin >> it;
-        sum += abs(it);
-        low = min(low, it);
+    long long sum = 0;
+    int negs = 0;
+    for(int i = 0; i < n; ++i) {
+        cin >> arr[i];
+        if(arr[i] < 0) {
+            ++negs;
+            arr[i] = -arr[i];
+        }
+        sum += arr[i];
     }
-    if (n % 2)
-        sum -= 2 * low;
-    cout << sum << endl;
+    sort(arr.begin(), arr.end());
+    if(negs & 1) 
+        sum -= 2 * arr[0];
+    cout << sum << "\n";
 }
 
 int main() {
