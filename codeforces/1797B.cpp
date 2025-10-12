@@ -45,33 +45,28 @@ template<class T> inline void chmax(T &a, T b){ if(b > a) a = b; }
 inline static void solver() {
     int n, k;
     cin >> n >> k;
-    vector<vector<int>> pattern(n, vector<int>(n));
+    vector<vector<int>> a(n, vector<int>(n));
+    
     for (int i = 0; i < n; i++) 
         for (int j = 0; j < n; j++) 
-            cin >> pattern[i][j];
-    vector<vector<int>> pattern180 = pattern;
-    function<void(void)> rotate180 = [&] (void) -> void {
-        reverse(pattern180.begin(), pattern180.end());
-        for (int i = 0; i < n; i++) 
-            reverse(pattern180[i].begin(), pattern180[i].end());
-    };
-    rotate180();
-    int c = 0;
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            if (pattern[i][j] != pattern180[i][j])
-                c++;
-        }
-    }
-    if (c == k) {
-        cout << "YES\n";
-    } else if (c > k) {
+            cin >> a[i][j];
+    
+    int diff = 0;
+    for (int i = 0; i < n; i++) 
+        for (int j = 0; j < n; j++) 
+            if (a[i][j] != a[n-1-i][n-1-j]) 
+                diff++;
+    diff /= 2;
+    
+    if (diff > k) {
         cout << "NO\n";
     } else {
-        int d = k - c;
-        if (d & 1)
+        k -= diff;
+        if (n & 1) 
+            cout << "YES\n"; 
+        else if (k & 1) 
             cout << "NO\n";
-        else
+        else 
             cout << "YES\n";
     }
 }
