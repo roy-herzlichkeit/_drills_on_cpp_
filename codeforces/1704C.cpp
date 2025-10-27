@@ -49,21 +49,34 @@ inline static void solver() {
     for (int& virus : viruses)
         cin >> virus;
     sort(viruses.begin(), viruses.end());
-    vi diff;
-    for (int i = 0; i < m; i++) 
-        diff.push_back((viruses[(i + 1) % m] - viruses[i] + n - 1) % n);
-    sort(diff.begin(), diff.end(), [] (const int& a, const int& b) {
-        return a > b;
+    
+    vector<pii> gaps;
+    
+    for (int i = 1; i < m; i++) {
+        int gap = viruses[i] - viruses[i-1] - 1;
+        if (gap > 0) 
+            gaps.push_back({gap, 2});
+    }
+    
+    int wrap_gap = viruses[0] + n - viruses[m-1] - 1;
+    if (wrap_gap > 0) {
+        gaps.push_back({wrap_gap, 2});
+    }
+
+    sort(gaps.begin(), gaps.end(), [](const pii& a, const pii& b) {
+        return a.first > b.first;
     });
-    ll sum = 0ll, cnt = 0ll;
-    m = diff.size();
-    for (int i = 0; i < m; i++) {
-        diff[i] -= 2 * cnt + 1;
-        sum += max(1ll, (ll) diff[i]);
+    
+    ll ans = 0, cnt = 0;
+    for (auto& gap : gaps) {
+        if (gap.first - cnt * 2 > 0) {
+            ll saved = max(1LL, (ll)gap.first - cnt * 2 - 1);
+            ans += saved;
+        }
         cnt += 2;
     }
-    n -= sum;
-    cout << n << endl;
+    
+    cout << n - ans << endl;
 }
 
 int main() {
