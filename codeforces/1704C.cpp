@@ -59,8 +59,7 @@ inline static void solver() {
     m = diff.size();
     for (int i = 0; i < m; i++) {
         diff[i] -= 2 * cnt + 1;
-        if (diff[i] > 0)
-            sum += (ll) diff[i];
+        sum += max(1ll, (ll) diff[i]);
         cnt += 2;
     }
     n -= sum;
