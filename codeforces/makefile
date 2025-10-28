@@ -1,7 +1,7 @@
-CC = 1704C.cpp
-CCC = "Commit-LVI"
+CC = 1703E.cpp
+CCC = "Commit-LVII"
 all:
-	g++ $(CC)
+	g++ -std=c++17 -O2 -Wall -Wextra $(CC)
 	./a.exe
 	rm ./a.exe
 commit:
