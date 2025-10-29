@@ -1,5 +1,5 @@
-CC = 2167G.cpp
-CCC = "Commit-LIX"
+CC = 1679B.cpp
+CCC = "Commit-LX"
 all:
 	g++ -std=c++17 -O2 -Wall -Wextra $(CC)
 	./a.exe

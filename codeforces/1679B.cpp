@@ -43,14 +43,53 @@ template<class T> inline void chmin(T &a, T b){ if(b < a) a = b; }
 template<class T> inline void chmax(T &a, T b){ if(b > a) a = b; }
 
 void solver() {
-    int n;
-    if(!(cin >> n)) return;
+    ll n, q;
+    cin >> n >> q;
+    
+    vll arr(n);
     ll sum = 0;
-    for(int i = 0; i < n; ++i){
-        ll x; cin >> x;
-        sum += x;
+    for (ll i = 0; i < n; i++) {
+        cin >> arr[i];
+        sum += arr[i];
     }
-    cout << sum << '\n';
+    
+    vi lastFirstQuery(n, 0); 
+    vll lastFirstQueryValue(n);  
+    for (ll i = 0; i < n; i++) {
+        lastFirstQueryValue[i] = arr[i];
+    }
+    
+    ll lastSecondQuery = 0;
+    ll lastSecondQueryValue = 0; 
+    
+    for (ll queryIdx = 1; queryIdx <= q; queryIdx++) {
+        ll ch;
+        cin >> ch;
+        
+        if (ch == 1) {
+            ll i, x;
+            cin >> i >> x;
+            i--;
+            ll currentValue;
+            if (lastSecondQuery > lastFirstQuery[i]) 
+                currentValue = lastSecondQueryValue;
+            else 
+                currentValue = lastFirstQueryValue[i];
+            sum -= currentValue;
+            sum += x;
+            lastFirstQuery[i] = queryIdx;
+            lastFirstQueryValue[i] = x;
+            
+        } else {
+            ll x;
+            cin >> x;
+            sum = n * x;
+            lastSecondQuery = queryIdx;
+            lastSecondQueryValue = x;
+        }
+        
+        cout << sum << endl;
+    }
 }
 
 int main() {
