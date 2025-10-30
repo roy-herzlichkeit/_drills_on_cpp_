@@ -1,5 +1,5 @@
-CC = 2161A.cpp
-CCC = "Commit-LXII"
+CC = 2161C.cpp
+CCC = "Commit-LXIII"
 all:
 	g++ -std=c++17 -O2 -Wall -Wextra $(CC)
 	./a.exe
