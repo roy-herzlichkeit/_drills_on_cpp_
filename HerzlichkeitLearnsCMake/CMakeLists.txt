@@ -1,5 +1,12 @@
 cmake_minimum_required(VERSION 3.14)
-project(herzlich)
+project(herzlich VERSION 1.0)
+
+set(HERZLICH_VERSION_MAJOR ${herzlich_VERSION_MAJOR})
+set(HERZLICH_VERSION_MINOR ${herzlich_VERSION_MINOR})
+
+option(USE_ADDER "Use Adder library for addition operations" ON)
+
+configure_file(herzlich_config.h.in herzlich.h)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -9,29 +16,49 @@ find_package(glfw3 CONFIG REQUIRED)
 
 add_executable(${PROJECT_NAME} main.cpp)
 
-find_library(ADDER_HRZ_LIB 
-    NAMES adder_hrz
-    PATHS "C:/Program Files (x86)/adder_hrz/lib"
-    NO_DEFAULT_PATH
-)
-find_path(ADDER_HRZ_INCLUDE 
-    NAMES adder.h
-    PATHS "C:/Program Files (x86)/adder_hrz/include"
-    NO_DEFAULT_PATH
-)
+target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_BINARY_DIR})
 
-if(NOT ADDER_HRZ_LIB)
-    message(FATAL_ERROR "adder_hrz library not found!")
-endif()
-if(NOT ADDER_HRZ_INCLUDE)
-    message(FATAL_ERROR "adder.h header not found!")
-endif()
+if(USE_ADDER)
+    find_library(ADDER_HRZ_LIB 
+        NAMES adder_hrz
+        PATHS "C:/Program Files (x86)/adder_hrz/lib"
+        NO_DEFAULT_PATH
+    )
+    find_path(ADDER_HRZ_INCLUDE 
+        NAMES adder.h
+        PATHS "C:/Program Files (x86)/adder_hrz/include"
+        NO_DEFAULT_PATH
+    )
 
-target_include_directories(${PROJECT_NAME} 
-    PRIVATE ${ADDER_HRZ_INCLUDE}
-)
+    if(ADDER_HRZ_LIB AND ADDER_HRZ_INCLUDE)
+        message(STATUS "Adder library found - enabling Adder support")
+        target_compile_definitions(${PROJECT_NAME} PRIVATE USE_ADDER)
+        target_include_directories(${PROJECT_NAME} PRIVATE ${ADDER_HRZ_INCLUDE})
+        target_link_libraries(${PROJECT_NAME} PRIVATE ${ADDER_HRZ_LIB})
+    else()
+        message(WARNING "Adder library not found - disabling Adder support")
+        set(USE_ADDER OFF CACHE BOOL "Use Adder library" FORCE)
+    endif()
+else()
+    message(STATUS "Adder library support disabled")
+endif()
 
 target_link_libraries(${PROJECT_NAME} 
-    PRIVATE ${ADDER_HRZ_LIB}
     PRIVATE glfw
 )
+
+install(TARGETS ${PROJECT_NAME} DESTINATION bin)
+install(FILES ${PROJECT_BINARY_DIR}/herzlich.h DESTINATION include)
+
+# Install vcpkg DLLs alongside the executable
+if(WIN32)
+    # Find and install GLFW3 DLL
+    find_file(GLFW3_DLL 
+        NAMES glfw3.dll 
+        PATHS "${CMAKE_PREFIX_PATH}/bin" 
+              "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/bin"
+    )
+    if(GLFW3_DLL)
+        install(FILES ${GLFW3_DLL} DESTINATION bin)
+    endif()
+endif()
