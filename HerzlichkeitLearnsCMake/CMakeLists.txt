@@ -1,10 +1,11 @@
-cmake_minimum_required(VERSION 3.14)
-project(herzlich VERSION 1.0)
+cmake_minimum_required(VERSION 4.1)
+project(herzlich VERSION 1.2)
 
 set(HERZLICH_VERSION_MAJOR ${herzlich_VERSION_MAJOR})
 set(HERZLICH_VERSION_MINOR ${herzlich_VERSION_MINOR})
 
 option(USE_ADDER "Use Adder library for addition operations" ON)
+option(USE_GLFW "Use GLFW library for window creation" OFF)
 
 configure_file(herzlich_config.h.in herzlich.h)
 
@@ -12,7 +13,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-find_package(glfw3 CONFIG REQUIRED)
+if(USE_GLFW)
+    find_package(glfw3 CONFIG REQUIRED)
+endif()
 
 add_executable(${PROJECT_NAME} main.cpp)
 
@@ -43,15 +46,15 @@ else()
     message(STATUS "Adder library support disabled")
 endif()
 
-target_link_libraries(${PROJECT_NAME} 
-    PRIVATE glfw
-)
+if(USE_GLFW)
+    target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
+endif()
 
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)
 install(FILES ${PROJECT_BINARY_DIR}/herzlich.h DESTINATION include)
 
 # Install vcpkg DLLs alongside the executable
-if(WIN32)
+if(WIN32 AND USE_GLFW)
     # Find and install GLFW3 DLL
     find_file(GLFW3_DLL 
         NAMES glfw3.dll 
@@ -62,3 +65,10 @@ if(WIN32)
         install(FILES ${GLFW3_DLL} DESTINATION bin)
     endif()
 endif()
+
+include(InstallRequiredSystemLibraries)
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/License.txt")
+set(CPACK_VERSION_MAJOR "${herzlich_VERSION_MAJOR}")
+set(CPACK_VERSION_MINOR "${herzlich_VERSION_MINOR}")
+# set(CPACK_GENERATOR "ZIP;NSIS")  # Create both ZIP and NSIS installer
+include(CPack)

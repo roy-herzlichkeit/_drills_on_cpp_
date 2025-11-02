@@ -1,5 +1,5 @@
 CC = 2161C.cpp
-CCC = "Commit-LXVII:CMake_S3"
+CCC = "Commit-LXVIII:CMake_S4"
 all:
 	g++ -std=c++17 -O2 -Wall -Wextra $(CC)
 	./a.exe

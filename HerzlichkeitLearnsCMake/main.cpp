@@ -1,6 +1,9 @@
 #include <iostream>
-#include <GLFW/glfw3.h>
 #include <herzlich.h>
+
+#ifdef USE_GLFW
+    #include <GLFW/glfw3.h>
+#endif
 
 #ifdef USE_ADDER
     #include <adder.h>
@@ -20,29 +23,33 @@ int main(int argc, char** argv) {
         return EXIT_FAILURE;
     }
     
+    int num1, num2;
+    if (argv[1][0] >= 'a' && argv[1][0] <= 'z') {
+        num1 = argv[1][0];
+    } else {
+        num1 = std::atoi(argv[1]);
+    }
+    
+    if (argv[2][0] >= 'a' && argv[2][0] <= 'z') {
+        num2 = argv[2][0]; 
+    } else {
+        num2 = std::atoi(argv[2]); 
+    }
+    
 #ifdef USE_ADDER
-    if (argv[1][0] >= 'a')
-        std::cout << tuto::add(argv[1][0], argv[2][0]) << std::endl;
-    else
-        std::cout << tuto::add(argv[1][0] - '0', argv[2][0] - '0') << std::endl;
+    std::cout << "Result: " << tuto::add(num1, num2) << std::endl;
 #else
-    // Fallback: simple addition without Adder library
-    int a = (argv[1][0] >= 'a') ? argv[1][0] : (argv[1][0] - '0');
-    int b = (argv[2][0] >= 'a') ? argv[2][0] : (argv[2][0] - '0');
-    std::cout << (a + b) << std::endl;
+    std::cout << "Result: " << (num1 + num2) << std::endl;
 #endif
     
+#ifdef USE_GLFW
     GLFWwindow* window;
-    // int width, height;
 
     if( !glfwInit() )
     {
         fprintf( stderr, "Failed to initialize GLFW\n" );
         exit( EXIT_FAILURE );
     }
-
-    // glfwWindowHint(GLFW_DEPTH_BITS, 16);
-    // glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE);
 
     window = glfwCreateWindow( 300, 300, "Gears", NULL, NULL );
     if (!window)
@@ -52,37 +59,14 @@ int main(int argc, char** argv) {
         exit( EXIT_FAILURE );
     }
 
-    // Set callback functions
-    // glfwSetFramebufferSizeCallback(window, reshape);
-    // glfwSetKeyCallback(window, key);
-
-    // glfwMakeContextCurrent(window);
-    // gladLoadGL(glfwGetProcAddress);
-    // glfwSwapInterval( 1 );
-
-    // glfwGetFramebufferSize(window, &width, &height);
-    // reshape(window, width, height);
-
-    // // Parse command-line options
-    // init();
-
-    // Main loop
     while( !glfwWindowShouldClose(window) )
     {
-        // Draw gears
-        // draw();
-
-        // Update animation
-        // animate();
-
-        // Swap buffers
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
-    // Terminate GLFW
     glfwTerminate();
+#endif
 
-    // Exit program
     exit( EXIT_SUCCESS );
 }
