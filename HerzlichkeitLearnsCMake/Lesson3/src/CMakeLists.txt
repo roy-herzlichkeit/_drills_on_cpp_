@@ -1,5 +1,0 @@
-cmake_minimum_required(VERSION 3.14.0)
-project(adder_HZLCM)
-add_library(adder_HZLCM adder.cpp)
-set_target_properties(adder_HZLCM PROPERTIES PUBLIC_HEADER adder.h)
-install(TARGETS adder_HZLCM LIBRARY DESTINATION lib PUBLIC_HEADER DESTINATION include)
