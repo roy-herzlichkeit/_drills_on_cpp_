@@ -1,0 +1,52 @@
+# Build directories
+build/
+*/build/
+**/build/
+
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+!CMakeLists.txt
+
+# Compiled object files
+*.o
+*.obj
+*.lo
+*.slo
+
+# Compiled executables
+*.exe
+*.out
+*.app
+
+# Compiled static libraries
+*.a
+*.lib
+
+# Compiled dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Dependency files
+*.d
+*.dep
+
+# Response files
+*.rsp
+
+# IDE and editor files
+.vscode/
+.vs/
+*.swp
+*.swo
+*~
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
