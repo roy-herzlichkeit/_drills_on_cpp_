@@ -1,7 +1,7 @@
-CC = 2161C.cpp
-CCC = "Commit-LXIX:ICPC_drills"
+CC = 1514B
+CCC = "Commit-LXX"
 all:
-	g++ -std=c++17 -O2 -Wall -Wextra $(CC)
+	g++ -std=c++17 -O2 -Wall -Wextra $(CC).cpp
 	./a.exe
 	rm ./a.exe
 commit:
@@ -10,5 +10,5 @@ commit:
 push:
 	git push -u origin main
 code:
-	cat template.cpp >> $(CC)
-	code $(CC)
+	cat template.cpp >> $(CC).cpp
+	code $(CC).cpp
