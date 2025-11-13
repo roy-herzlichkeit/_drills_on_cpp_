@@ -1,5 +1,5 @@
 CC = 2161C.cpp
-CCC = "Commit-LXIV:CMake_S1"
+CCC = "Commit-LXIX:ICPC_drills"
 all:
 	g++ -std=c++17 -O2 -Wall -Wextra $(CC)
 	./a.exe
