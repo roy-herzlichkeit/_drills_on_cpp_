@@ -1,5 +1,5 @@
-CC = 3405.cpp
-CCC = "Commit-LXXI"
+CC = 3224.cpp
+CCC = "Commit-LXXII"
 all:
 	g++ -std=c++17 -O2 -Wall -Wextra $(CC)
 	./a.exe
@@ -12,3 +12,7 @@ push:
 code:
 	cat template.cpp >> $(CC)
 	code $(CC)
+input: 
+	g++ -std=c++17 -O2 -Wall -Wextra $(CC)
+	./a.exe < i.txt
+	rm ./a.exe
