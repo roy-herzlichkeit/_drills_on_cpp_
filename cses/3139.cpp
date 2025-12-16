@@ -46,41 +46,24 @@ template<class T> inline void chmax(T &a, T b){ if(b > a) a = b; }
 void solver() {
     int n;
     cin >> n;
-    vector<pair<int, pii>> scores(n);
-    int k;
-    ITR(i, 0, n) 
-        scores[i].first = i;
-    string op;
-    ITR(i, 0, n - 1) {
-        ITR(j, i + 1, n) {
-            cout << "? " << (i + 1) << " " << (j + 1) << "\n";
-            cout.flush();
-            cin >> op;
-            if (op == "NO") {
-                scores[i].second.first++;
-                scores[j].second.second--;
-            } else {
-                scores[i].second.first--;
-                scores[j].second.second++;
-            }
-        }
-    }
-    sort(scores.begin(), scores.end(), [] (const auto& a, const auto& b) {
-        if (a.second.first == b.second.first) 
-            return a.second.second > b.second.second;
-        return a.second.first > b.second.first;
+    bool (*comp)(int, int) = [] (int x, int y) -> bool {
+        cout << "? " << x + 1 << " " << y + 1 << "\n";
+        cout.flush();
+        string res;
+        cin >> res;
+        return res == "YES";
+    };
+    vi index(n), res(n);
+    for (int i = 0; i < n; index[i] = i, i++);
+    stable_sort(index.begin(), index.end(), [comp] (int a, int b) {
+        return comp(a, b);
     });
-    vi res(n);
-    k = n;
-    for (const auto& it : scores) {
-        res[it.first] = k;
-        k--;
-    }
-    cout <<  "! ";
-    ITR(i, 0, n)
-        cout << res[i] << " ";
+    for (int i = 0; i < n; res[index[i]] = i, i++);
+    cout << "! ";
+    ITR(i, 0, n) 
+        cout << res[i] + 1 << " ";
     cout << "\n";
-    cout.flush();
+    cout.flush();    
 }
 
 int main() {
