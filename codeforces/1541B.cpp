@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#define MOD 1000000007
+#define MOD 1e9+7
 using namespace std;
 
 using ll = long long;
@@ -43,40 +43,22 @@ template<class T> inline void chmin(T &a, T b){ if(b < a) a = b; }
 template<class T> inline void chmax(T &a, T b){ if(b > a) a = b; }
 
 void solver() {
-    int n, q;
-    cin >> n >> q;
-    vector<pair<ll, int>> nums(n + 1);
-    ll sum = 0;
+    ll n, count = 0;
+    cin >> n;
+    vector<pair<ll, ll>> indices(n);
+    for (ll i = 0, tmp; i < n; i++) {
+        cin >> tmp;
+        indices[i] = {tmp, i + 1};
+    }
+    sort(indices.begin(), indices.end());
     for (int i = 0; i < n; i++) {
-        cin >> nums[i].first;
-        nums[i].second = 0;
-        sum += ll(nums[i].first);
-    }
-    nums[n] = {sum, 0};
-    // vector<ll> res;
-    ll curr = sum;
-    for (int i = 1; i <= q; i++) {
-        int ch;
-        cin >> ch;
-        if (ch - 1) {
-            int m;
-            cin >> m;
-            curr = ll(n) * ll(m);
-            nums[n] = {m, i};
-        } else {
-            int id, m;
-            cin >> id >> m;
-            if (nums[id].second >= nums[n].second) 
-                curr += ll(m - nums[id].first);
-            else 
-                curr += ll(m - nums[n].first);
-            nums[id] = {m, i};
+        for (int j = i + 1; j < n; j++) {
+            if ((indices[i].first * indices[j].first) >= 2 * n)
+                break;
+            count += ((indices[i].first * indices[j].first) == (indices[i].second + indices[j].second));
         }
-        cout << curr << "\n";
-        // res.push_back(curr);
     }
-    // for (const int& it : res)
-    //     cout << it << "\n";
+    cout << count << "\n";
 }
 
 int main() {
@@ -84,8 +66,10 @@ int main() {
     #ifdef LOCAL
         freopen("a.in", "r", stdin);
     #endif
-    
-    solver();
+
+    int T = 1;
+    if(!(cin >> T)) return 0;
+    while(T--) solver();
 
     return 0;
 }

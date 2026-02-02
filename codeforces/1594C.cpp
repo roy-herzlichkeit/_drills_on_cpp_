@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#define MOD 1000000007
+#define MOD 1e9+7
 using namespace std;
 
 using ll = long long;
@@ -43,40 +43,36 @@ template<class T> inline void chmin(T &a, T b){ if(b < a) a = b; }
 template<class T> inline void chmax(T &a, T b){ if(b > a) a = b; }
 
 void solver() {
-    int n, q;
-    cin >> n >> q;
-    vector<pair<ll, int>> nums(n + 1);
-    ll sum = 0;
-    for (int i = 0; i < n; i++) {
-        cin >> nums[i].first;
-        nums[i].second = 0;
-        sum += ll(nums[i].first);
-    }
-    nums[n] = {sum, 0};
-    // vector<ll> res;
-    ll curr = sum;
-    for (int i = 1; i <= q; i++) {
-        int ch;
-        cin >> ch;
-        if (ch - 1) {
-            int m;
-            cin >> m;
-            curr = ll(n) * ll(m);
-            nums[n] = {m, i};
-        } else {
-            int id, m;
-            cin >> id >> m;
-            if (nums[id].second >= nums[n].second) 
-                curr += ll(m - nums[id].first);
-            else 
-                curr += ll(m - nums[n].first);
-            nums[id] = {m, i};
+    int n;
+    char ch;
+    string s;
+    cin >> n >> ch >> s;
+    bool all_chars_are_ch = true;
+    for (const char& c : s) {
+        if (ch != c) {
+            all_chars_are_ch = false;
+            break;
         }
-        cout << curr << "\n";
-        // res.push_back(curr);
     }
-    // for (const int& it : res)
-    //     cout << it << "\n";
+    if (all_chars_are_ch) {
+        cout << "0\n";
+        return;
+    } 
+    // int n = s.size();
+    for (int i = 2; i <= n; i++) {
+        bool chosen_index = true;
+        for (int j = i; j <= n; j += i) {
+            if (s[j - 1] != ch) {
+                chosen_index = false;
+                break;
+            }
+        }
+        if (chosen_index) {
+            cout << "1\n" << i << "\n";
+            return;
+        }
+    }
+    cout << "2\n" << n - 1 << " " << n << "\n";
 }
 
 int main() {
@@ -84,8 +80,10 @@ int main() {
     #ifdef LOCAL
         freopen("a.in", "r", stdin);
     #endif
-    
-    solver();
+
+    int T = 1;
+    if(!(cin >> T)) return 0;
+    while(T--) solver();
 
     return 0;
 }

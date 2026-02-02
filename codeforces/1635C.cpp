@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#define MOD 1000000007
+#define MOD 1e9+7
 using namespace std;
 
 using ll = long long;
@@ -43,40 +43,22 @@ template<class T> inline void chmin(T &a, T b){ if(b < a) a = b; }
 template<class T> inline void chmax(T &a, T b){ if(b > a) a = b; }
 
 void solver() {
-    int n, q;
-    cin >> n >> q;
-    vector<pair<ll, int>> nums(n + 1);
-    ll sum = 0;
-    for (int i = 0; i < n; i++) {
-        cin >> nums[i].first;
-        nums[i].second = 0;
-        sum += ll(nums[i].first);
-    }
-    nums[n] = {sum, 0};
-    // vector<ll> res;
-    ll curr = sum;
-    for (int i = 1; i <= q; i++) {
-        int ch;
-        cin >> ch;
-        if (ch - 1) {
-            int m;
-            cin >> m;
-            curr = ll(n) * ll(m);
-            nums[n] = {m, i};
-        } else {
-            int id, m;
-            cin >> id >> m;
-            if (nums[id].second >= nums[n].second) 
-                curr += ll(m - nums[id].first);
-            else 
-                curr += ll(m - nums[n].first);
-            nums[id] = {m, i};
+    int n;
+    cin >> n;
+    vi arr(n);
+    for (int& it : arr)
+        cin >> it;
+    if (is_sorted(arr.begin(), arr.end())) 
+        cout << "0\n";
+    else if (arr[n - 1] < 0 || (arr[n - 1] - arr[n - 2] < 0))
+        cout << "-1\n";
+    else {
+        cout << n - 2 << endl;
+        for (int i = 0; i < n - 2; i++) {
+            arr[i] = arr[n - 2] - arr[n - 1];
+            cout << i + 1 << " " << n - 1 << " " << n << endl;
         }
-        cout << curr << "\n";
-        // res.push_back(curr);
-    }
-    // for (const int& it : res)
-    //     cout << it << "\n";
+    }    
 }
 
 int main() {
@@ -84,8 +66,10 @@ int main() {
     #ifdef LOCAL
         freopen("a.in", "r", stdin);
     #endif
-    
-    solver();
+
+    int T = 1;
+    if(!(cin >> T)) return 0;
+    while(T--) solver();
 
     return 0;
 }

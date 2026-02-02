@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#define MOD 1000000007
+#define MOD 1e9+7
 using namespace std;
 
 using ll = long long;
@@ -42,41 +42,52 @@ template<class T> inline T ceil_div(T a, T b){ return (a + b - 1) / b; }
 template<class T> inline void chmin(T &a, T b){ if(b < a) a = b; }
 template<class T> inline void chmax(T &a, T b){ if(b > a) a = b; }
 
+bool check_palin(string s) {
+    for (int i = 0, n = s.size(); i < n / 2; i++)
+        if (s[i] != s[n - i - 1])
+            return  false;
+    return true;
+}
+
 void solver() {
-    int n, q;
-    cin >> n >> q;
-    vector<pair<ll, int>> nums(n + 1);
-    ll sum = 0;
-    for (int i = 0; i < n; i++) {
-        cin >> nums[i].first;
-        nums[i].second = 0;
-        sum += ll(nums[i].first);
+    int n;
+    cin >> n;
+    string s;
+    cin >> s;
+    if (check_palin(s) || n == 0) {
+        cout << "0\n";
+        return;
     }
-    nums[n] = {sum, 0};
-    // vector<ll> res;
-    ll curr = sum;
-    for (int i = 1; i <= q; i++) {
-        int ch;
-        cin >> ch;
-        if (ch - 1) {
-            int m;
-            cin >> m;
-            curr = ll(n) * ll(m);
-            nums[n] = {m, i};
-        } else {
-            int id, m;
-            cin >> id >> m;
-            if (nums[id].second >= nums[n].second) 
-                curr += ll(m - nums[id].first);
-            else 
-                curr += ll(m - nums[n].first);
-            nums[id] = {m, i};
+    int res = INT_MAX;
+    for (char ch = 'a'; ch <= 'z'; ch++) {
+        int left = 0, right = n - 1, count = 0;
+        bool is_palin = true;
+        while (left <= right) {
+            if (s[left] == s[right]) {
+                left++;
+                right--; 
+                continue;
+            }
+            if (s[left] == ch) {
+                left++;
+                count++;
+            }
+            else if (s[right] == ch) {
+                right--;
+                count++;
+            }
+            else {
+                is_palin = false;
+                break;
+            }
         }
-        cout << curr << "\n";
-        // res.push_back(curr);
+        if (is_palin)
+            res = min(count, res);
     }
-    // for (const int& it : res)
-    //     cout << it << "\n";
+    if (res == INT_MAX)
+        cout << "-1\n";
+    else
+        cout << res << endl;
 }
 
 int main() {
@@ -84,8 +95,10 @@ int main() {
     #ifdef LOCAL
         freopen("a.in", "r", stdin);
     #endif
-    
-    solver();
+
+    int T = 1;
+    if(!(cin >> T)) return 0;
+    while(T--) solver();
 
     return 0;
 }
