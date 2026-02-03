@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#define MOD 1000000007ll
+#define MOD 1000000007
 using namespace std;
 
 using ll = long long;
@@ -43,16 +43,23 @@ template<class T> inline void chmin(T &a, T b){ if(b < a) a = b; }
 template<class T> inline void chmax(T &a, T b){ if(b > a) a = b; }
 
 void solver() {
-    int n;
-    cin >> n;
-    ll *dp = new ll[n + 1]();
-    *(dp) = 1ll;
-    for (int i = 1; i <= n; i++) 
-        for (int j = i - 1; j >= max(0, i - 6); j--) 
-            *(dp + i) = (*(dp + i) + *(dp + j)) % MOD;
-    cout << *(dp + n) << endl;
-    delete[] dp;
-    dp = nullptr;
+    int n, x;
+    cin >> n >> x;
+    set<int> coins;
+    vi dp(x + 1, 0);
+    for (int i = 0, tmp; i < n; i++) {
+        cin >> tmp;
+        coins.insert(tmp);
+    }
+    dp[0] = 1;
+    for (int i = 1; i <= x; i++) {
+        for (const int& coin : coins) {
+            if (i < coin)
+                break;
+            dp[i] = (dp[i] + dp[i - coin]) % MOD;
+        }
+    }
+    cout << dp[x] << endl;
 }
 
 int main() {

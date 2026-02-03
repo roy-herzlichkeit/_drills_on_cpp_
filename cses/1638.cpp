@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#define MOD 1000000007ll
+#define MOD 1000000007
 using namespace std;
 
 using ll = long long;
@@ -45,14 +45,34 @@ template<class T> inline void chmax(T &a, T b){ if(b > a) a = b; }
 void solver() {
     int n;
     cin >> n;
-    ll *dp = new ll[n + 1]();
-    *(dp) = 1ll;
-    for (int i = 1; i <= n; i++) 
-        for (int j = i - 1; j >= max(0, i - 6); j--) 
-            *(dp + i) = (*(dp + i) + *(dp + j)) % MOD;
-    cout << *(dp + n) << endl;
-    delete[] dp;
-    dp = nullptr;
+    vector<string> grid(n);
+    for (int i = 0; i < n; i++) 
+        cin >> grid[i];
+    vector<vector<int>> dp(n, vector<int>(n, 0));
+    if (grid[0][0] == '*' || grid[n - 1][n - 1] == '*') {
+        cout << "0\n";
+        return;
+    }
+    dp[0][0] = 1;
+    for (int i = 1; i < n; i++) {
+        if (grid[i][0] == '*') 
+            dp[i][0] = 0;
+        else 
+            dp[i][0] = dp[i - 1][0];
+        if (grid[0][i] == '*') 
+            dp[0][i] = 0;
+        else 
+            dp[0][i] = dp[0][i - 1];
+    }
+    for (int i = 1; i < n; i++) {
+        for (int j = 1; j < n; j++) {
+            if (grid[i][j] == '*')
+                dp[i][j] = 0;
+            else
+                dp[i][j] = (dp[i - 1][j] + dp[i][j - 1]) % MOD;
+        }
+    }
+    cout << dp[n - 1][n - 1] % MOD << endl;
 }
 
 int main() {

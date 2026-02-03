@@ -1,90 +1,88 @@
-// MEMOIZATION -> O(n * target) -> max of O(1e8)
-// #include <bits/stdc++.h>
-// using namespace std;
- 
-// #define all(v) v.begin(), v.end()
- 
-// typedef long long ll;
- 
-// const int INF = 1e9 + 7;
-// int res, n, target;
-// vector<int> dp;
-
-// void backtrack(int i, int sum, vector<int>& coins);
-// inline static void solver(void);
-
-// signed main(void) {
-//     ios_base::sync_with_stdio(0);
-//     cin.tie(0);
-//     cout.tie(0);
-//     #ifdef LOCAL
-//         freopen("a.in", "r", stdin);
-//     #endif
-//     solver();
-//     exit(EXIT_SUCCESS);
-// }
-
-// inline static void solver(void) {
-//     cin >> n >> target;
-//     vector<int> coins(n);
-//     for (int& coin : coins)
-//         cin >> coin;
-//     res = INT_MAX;
-//     dp.assign(target + 1, INT_MAX);
-//     backtrack(0, 0, coins);
-//     if (res == INT_MAX)
-//         cout << "-1\n";
-//     else    
-//         cout << res << endl;
-// }
-
-// void backtrack(int i, int sum, vector<int>& coins) {
-//     if (sum == target) {
-//         res = min(res, i);
-//         return;
-//     } else if (sum > target) {
-//         return;
-//     }
-//     if (dp[sum] <= i) 
-//         return;
-//     dp[sum] = i;
-//     for (int j = 0; j < n; j++) 
-//         backtrack(i + 1, sum + coins[j], coins);
-// }
 #include <bits/stdc++.h>
+#define MOD 1e9+7
 using namespace std;
- 
-#define all(v) v.begin(), v.end()
- 
-typedef long long ll;
- 
-ll dp[1000001];
-const int INF = 1e9 + 7;
 
-inline static void solver(void);
+using ll = long long;
+using ull = unsigned long long;
+using pii = pair<int,int>;
+using vi = vector<int>;
+using vll = vector<ll>;
 
-signed main(void) {
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
+static inline void fast_io() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+}
+
+static inline unsigned long long splitmix64(unsigned long long x) {
+    x += 0x9e3779b97f4a7c15ULL;
+    x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9ULL;
+    x = (x ^ (x >> 27)) * 0x94d049bb133111ebULL;
+    return x ^ (x >> 31);
+}
+
+static mt19937_64 rng((unsigned)splitmix64(chrono::high_resolution_clock::now().time_since_epoch().count()));
+
+struct chash {
+    size_t operator()(unsigned long long x) const {
+        static const unsigned long long FIXED_RANDOM = splitmix64(chrono::high_resolution_clock::now().time_since_epoch().count());
+        return (size_t)splitmix64(x + FIXED_RANDOM);
+    }
+};
+
+#ifndef ONLINE_JUDGE
+  #define dbg(...) do{ fprintf(stderr, "DBG (%s:%d) = ", __FILE__, __LINE__); fprintf(stderr, __VA_ARGS__); fprintf(stderr, "\n"); } while(0)
+  #define debug_var(x) cerr << #x << " = " << (x) << "\n";
+#else
+  #define dbg(...) (void)0
+  #define debug_var(x) (void)0
+#endif
+
+template<class T> inline T aabs(T x){ return x < 0 ? -x : x; }
+template<class T> inline T ceil_div(T a, T b){ return (a + b - 1) / b; }
+template<class T> inline void chmin(T &a, T b){ if(b < a) a = b; }
+template<class T> inline void chmax(T &a, T b){ if(b > a) a = b; }
+
+void solver() {
+    int m, n;
+    cin >> m >> n;
+    set<int> coins;
+    vll dp(n + 1, LLONG_MAX);
+    bool flag = false;
+    for (int i = 0, tmp; i < m; i++) {
+        cin >> tmp;
+        flag |= (n == tmp);
+        if (tmp < n) {
+            coins.insert(tmp);
+            dp[tmp] = 1;
+        }
+    }
+    if (flag) {
+        cout << "1\n";
+        return;
+    }
+    for (int i = 1; i <= n; i++) {
+        if (dp[i] == 1)
+            continue;
+        for (const int& coin : coins) {
+            if (i < coin)
+                break;
+            if (dp[i - coin] == LLONG_MAX)
+                continue;
+            dp[i] = min(dp[i - coin] + 1, dp[i]);
+        }
+    }
+    if (dp[n] == LLONG_MAX)
+        dp[n] = -1;
+    cout << dp[n] << endl;
+}
+
+int main() {
+    fast_io();
     #ifdef LOCAL
         freopen("a.in", "r", stdin);
     #endif
-    solver();
-    exit(EXIT_SUCCESS);
-}
 
-inline static void solver(void) {
-	int n, x;
-	cin >> n >> x;
-	vector<int> coins(n);
-	for (int i = 0; i < n; i++) 
-        cin >> coins[i]; 
-	for (int i = 0; i <= x; i++) 
-        dp[i] = INT_MAX; 
-	dp[0] = 0;
-	for (int i = 1; i <= n; i++) 
-		for (int weight = coins[i - 1]; weight <= x; weight++) 
-			dp[weight] = min(dp[weight], dp[weight - coins[i - 1]] + 1);
-	cout << (dp[x] == INT_MAX ? -1 : dp[x]) << endl;
+    solver();
+
+    return 0;
 }

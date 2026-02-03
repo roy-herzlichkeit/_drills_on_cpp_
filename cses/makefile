@@ -1,4 +1,4 @@
-CC = 3139.cpp
+CC = 1746.cpp
 CCC = "Commit-LXXV"
 all:
 	g++ -std=c++17 -O2 -Wall -Wextra $(CC)
