@@ -42,43 +42,36 @@ template<class T> inline T ceil_div(T a, T b){ return (a + b - 1) / b; }
 template<class T> inline void chmin(T &a, T b){ if(b < a) a = b; }
 template<class T> inline void chmax(T &a, T b){ if(b > a) a = b; }
 
-void solver() {
-    int n, x;
-    cin >> n >> x;
-    vi arr(n);
-    for (int& it : arr)
-        cin >> it;
-    sort(arr.begin(), arr.end());
-    vll prefix(n);
-    prefix[0] = arr[0];
-    for (int i = 1; i < n; i++)
-        prefix[i] = arr[i] + prefix[i - 1];
-    ll sum = 0;
-    ll budget = x;
-    int idx = 0;
-    while (budget > 0 && idx < n) {
-        int low = idx, high = n - 1, best = idx - 1;
-        while (low <= high) {
-            int mid = low + (high - low) / 2;
-            ll sum_cats = prefix[mid] - (idx > 0 ? prefix[idx - 1] : 0);
-            int count = mid - idx + 1;
-            ll cost = sum_cats; 
-            if (cost <= budget) {
-                best = mid;
-                low = mid + 1;
-            } else {
-                high = mid - 1;
-            }
-        }
-        if (best < idx) break;
-        ll sum_cats = prefix[best] - (idx > 0 ? prefix[idx - 1] : 0);
-        int count = best - idx + 1;
-        ll days = budget / sum_cats;
-        sum += (ll)count * days;
-        budget -= sum_cats * days;
-        idx = best + 1;
-    }
-    cout << sum << endl;
+int binSearch(long long val, int ind, int x) {
+	int low = 1, high = 1e9 + 5;
+	int ans = 0; 
+	while (low <= high) {
+		int mid = (low + high) / 2; 
+		if (val + (1LL * (ind + 1) * (mid - 1)) <= x) {
+			ans = mid;
+			low = mid + 1;
+		}
+		else {
+			high = mid - 1;
+		}
+	} 
+	return ans;
+} 
+
+void solver() {int n, x;
+	cin >> n >> x;
+	vector<int> cost(n);
+	for (int i = 0; i < n; i++) 
+		cin >> cost[i];
+	sort(cost.begin(), cost.end());
+	vector<long long> presum(n);
+	presum[0] = cost[0];
+	for (int i = 1; i < n; i++)
+		presum[i] = presum[i - 1] + cost[i];
+	long long ans = 0;
+	for (int i = 0; i < n; i++)
+		ans += binSearch(presum[i], i, x); 
+	cout << ans << "\n";
 }
 
 int main() {
