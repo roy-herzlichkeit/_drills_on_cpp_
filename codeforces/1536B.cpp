@@ -42,15 +42,35 @@ template<class T> inline T ceil_div(T a, T b){ return (a + b - 1) / b; }
 template<class T> inline void chmin(T &a, T b){ if(b < a) a = b; }
 template<class T> inline void chmax(T &a, T b){ if(b > a) a = b; }
 
-void solver() {
-    int n;
-    if(!(cin >> n)) return;
-    ll sum = 0;
-    for(int i = 0; i < n; ++i){
-        ll x; cin >> x;
-        sum += x;
+struct input {
+    int size;
+    string str;
+};
+
+input ip;
+string op;
+
+bool recurD(string prev) {
+    if (prev.size() > 2)
+        return false;
+    for (char c = 'a'; c <= 'z'; c++) {
+        string s = prev + c;
+        if (ip.str.find(s) == string::npos) {
+            op = s;
+            return true;
+        }
     }
-    cout << sum << '\n';
+    for (char c = 'a'; c <= 'z'; c++) {
+        if (recurD(prev + c))
+            return true;
+    }
+    return false;
+}
+
+void solver() {
+    cin >> ip.size >> ip.str;
+    recurD("");
+    cout << op << endl;
 }
 
 int main() {

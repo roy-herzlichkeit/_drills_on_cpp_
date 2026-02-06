@@ -44,13 +44,16 @@ template<class T> inline void chmax(T &a, T b){ if(b > a) a = b; }
 
 void solver() {
     int n;
-    if(!(cin >> n)) return;
-    ll sum = 0;
-    for(int i = 0; i < n; ++i){
-        ll x; cin >> x;
-        sum += x;
-    }
-    cout << sum << '\n';
+	string s;
+	cin >> n >> s;
+	int count = 0;
+	for (int i = 0; i < n; i++) 
+		if (s[i] == '0') 
+            count++;
+	if ((count % 2 == 0) || (count == 1)) 
+		cout << "BOB\n";
+	else
+		cout << "ALICE\n";
 }
 
 int main() {
