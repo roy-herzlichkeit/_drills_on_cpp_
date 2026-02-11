@@ -1,5 +1,5 @@
-CC = 1879C
-CCC = "Commit-LXXXVI"
+CC = 1846E1
+CCC = "Commit-LXXXVII"
 all:
 	g++ -std=c++17 -O2 -Wall -Wextra $(CC).cpp
 	./a.exe
