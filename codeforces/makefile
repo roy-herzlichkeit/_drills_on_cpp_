@@ -1,4 +1,4 @@
-CC = 1846E1
+CC = 1775B
 CCC = "Commit-LXXXVII"
 all:
 	g++ -std=c++17 -O2 -Wall -Wextra $(CC).cpp
@@ -9,6 +9,6 @@ commit:
 	git commit -m $(CCC)
 push:
 	git push -u origin main
-code:
+file:
 	cat template.cpp >> $(CC).cpp
 	code $(CC).cpp

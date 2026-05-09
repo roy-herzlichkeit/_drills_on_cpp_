@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#define MOD 1e9+7
+#define MOD 1000000007
 using namespace std;
 
 using ll = long long;
@@ -43,21 +43,25 @@ template<class T> inline void chmin(T &a, T b){ if(b < a) a = b; }
 template<class T> inline void chmax(T &a, T b){ if(b > a) a = b; }
 
 void solver() {
-	int n, q;
-	cin >> n >> q;
-	vector<ll> prefix_sum(n, 0);
-	ll a, b, temp;
-	for (int i = 0; i < n; i++) {
-		cin >> temp;
-		if (i == 0)
-			prefix_sum[i] = temp;
-		else
-			prefix_sum[i] = prefix_sum[i - 1] + temp;
+    int n;
+    cin >> n;
+    vi a(n), res;
+    for (int& it : a)
+        cin >> it;
+    for (int i = 0; i < n; i++) {
+		int l = 1, r = i + 1;
+		while (l <= r) {
+			int m = (l + r) / 2;
+			if (a[i - m + 1] >= m) 
+				l = m + 1;
+			else 
+				r = m - 1;
+		}
+		res.push_back(r);
 	}
-	for (int i = 0; i < q; i++) {
-		cin >> a >> b;
-		cout << prefix_sum[b - 1] - ((a == 1) ? 0 : prefix_sum[a - 2]) << endl;
-	}
+    for (const int& it : res)
+        cout << it << " ";
+    cout << "\n";
 }
 
 int main() {
@@ -67,7 +71,7 @@ int main() {
     #endif
 
     int T = 1;
-    // if(!(cin >> T)) return 0;
+    if(!(cin >> T)) return 0;
     while(T--) solver();
 
     return 0;

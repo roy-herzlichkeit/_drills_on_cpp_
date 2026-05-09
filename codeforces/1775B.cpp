@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#define MOD 1e9+7
+#define MOD 1000000007
 using namespace std;
 
 using ll = long long;
@@ -43,21 +43,35 @@ template<class T> inline void chmin(T &a, T b){ if(b < a) a = b; }
 template<class T> inline void chmax(T &a, T b){ if(b > a) a = b; }
 
 void solver() {
-	int n, q;
-	cin >> n >> q;
-	vector<ll> prefix_sum(n, 0);
-	ll a, b, temp;
+	int n;
+	cin >> n;
+	map<int, int> mp;
+	vector<vector<int>> v;
 	for (int i = 0; i < n; i++) {
-		cin >> temp;
-		if (i == 0)
-			prefix_sum[i] = temp;
-		else
-			prefix_sum[i] = prefix_sum[i - 1] + temp;
+		int x;
+		cin >> x;
+		vector<int> temp(x);
+		for (int j = 0; j < x; j++) {
+			cin >> temp[j];
+			mp[temp[j]]++;
+		}
+		v.push_back(temp);
 	}
-	for (int i = 0; i < q; i++) {
-		cin >> a >> b;
-		cout << prefix_sum[b - 1] - ((a == 1) ? 0 : prefix_sum[a - 2]) << endl;
+	string ans = "No";
+	for (int i = 0; i < n; i++) { 
+		int f = 1;
+		for (auto it : v[i]) {
+			if (mp[it] == 1) {
+				f = 0;
+				break;
+			}
+		}
+		if (f == 1) {
+			ans = "Yes";
+			break;
+		}
 	}
+	cout << ans << endl;
 }
 
 int main() {
@@ -67,7 +81,7 @@ int main() {
     #endif
 
     int T = 1;
-    // if(!(cin >> T)) return 0;
+    if(!(cin >> T)) return 0;
     while(T--) solver();
 
     return 0;
