@@ -1,5 +1,5 @@
-CC = 1661.cpp
-CCC = "Commit-LXXIXJ"
+CC = 1652.cpp
+CCC = "Commit-XCI"
 all:
 	g++ -std=c++17 -O2 -Wall -Wextra $(CC)
 	./a.exe
@@ -9,7 +9,7 @@ commit:
 	git commit -m $(CCC)
 push:
 	git push -u origin main
-code:
+file:
 	cat template.cpp >> $(CC)
 	code $(CC)
 input: 
