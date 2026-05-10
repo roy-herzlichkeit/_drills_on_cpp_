@@ -1,4 +1,4 @@
-CC = 1633.cpp
+CC = abc188_d.cpp
 CCC = "Commit-XII"
 all:
 	g++ $(CC)
@@ -8,5 +8,7 @@ push:
 	git add .
 	git commit -m $(CCC)
 	git push -u origin main
-CF:
+file:
+	touch $(CC)
 	cat template.cpp >> $(CC)
+	code $(CC)
