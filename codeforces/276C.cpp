@@ -42,32 +42,35 @@ template<class T> inline T ceil_div(T a, T b){ return (a + b - 1) / b; }
 template<class T> inline void chmin(T &a, T b){ if(b < a) a = b; }
 template<class T> inline void chmax(T &a, T b){ if(b > a) a = b; }
 
+void solver() {
+    int N, Q;
+    cin >> N >> Q;
+    vector<int> arr(N), prefix(N + 1, 0);
+    for (int& it : arr)
+        cin >> it;
+    while (Q--) {
+        int l, r;
+        cin >> l >> r;
+        prefix[l - 1] += 1;
+        prefix[r] += -1;
+    }
+    for (int i = 1; i <= N; i++) 
+        prefix[i] += prefix[i - 1];
+    sort(prefix.begin(), prefix.begin() + N);
+    sort(arr.begin(), arr.end());
+    ull res = 0ull;
+    for (int i = 0; i < N; i++)
+        res += ull(prefix[i]) * ull(arr[i]);
+    cout << res << endl;
+}
+
 int main() {
     fast_io();
     #ifdef LOCAL
         freopen("a.in", "r", stdin);
     #endif
 
-    int T = 1;
-    auto mod_pow = [] (ll base, ll exp, ll mod) -> ll {
-        ll result = 1;
-        base %= mod;
-        while (exp > 0) {
-            if (exp & 1) {
-                result = (result * base) % mod;
-            }
-            base = (base * base) % mod;
-            exp >>= 1;
-        }
-        return result;
-    };
-    if(!(cin >> T)) return 0;
-    while(T--) {
-        ll n;
-        int k;
-        cin >> n >> k;
-        cout << mod_pow(n, k, MOD) << endl;
-    };
+    solver();
 
     return 0;
 }

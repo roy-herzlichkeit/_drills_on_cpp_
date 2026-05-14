@@ -42,6 +42,12 @@ template<class T> inline T ceil_div(T a, T b){ return (a + b - 1) / b; }
 template<class T> inline void chmin(T &a, T b){ if(b < a) a = b; }
 template<class T> inline void chmax(T &a, T b){ if(b > a) a = b; }
 
+void solver() {
+    int a, b;
+    cin >> a >> b;
+    cout << ((a ^ (a & b) + (b ^ (a & b)))) << endl;
+}
+
 int main() {
     fast_io();
     #ifdef LOCAL
@@ -49,25 +55,8 @@ int main() {
     #endif
 
     int T = 1;
-    auto mod_pow = [] (ll base, ll exp, ll mod) -> ll {
-        ll result = 1;
-        base %= mod;
-        while (exp > 0) {
-            if (exp & 1) {
-                result = (result * base) % mod;
-            }
-            base = (base * base) % mod;
-            exp >>= 1;
-        }
-        return result;
-    };
     if(!(cin >> T)) return 0;
-    while(T--) {
-        ll n;
-        int k;
-        cin >> n >> k;
-        cout << mod_pow(n, k, MOD) << endl;
-    };
+    while(T--) solver();
 
     return 0;
 }
