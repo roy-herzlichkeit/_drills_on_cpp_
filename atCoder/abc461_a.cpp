@@ -47,7 +47,9 @@ int main() {
         freopen("a.in", "r", stdin);
     #endif
 
-    solver();
+    int A, D;
+    cin >> A >> D;
+    cout << ((A <= D) ? "Yes" : "No") << endl;
 
     return 0;
 }

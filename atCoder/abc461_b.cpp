@@ -41,13 +41,29 @@ template<class T> inline T ceil_div(T a, T b){ return (a + b - 1) / b; }
 template<class T> inline void chmin(T &a, T b){ if(b < a) a = b; }
 template<class T> inline void chmax(T &a, T b){ if(b > a) a = b; }
 
+
 int main() {
     fast_io();
     #ifdef LOCAL
         freopen("a.in", "r", stdin);
     #endif
 
-    solver();
-
+    int N;
+    cin >> N;
+    vi A(N), B(N);
+    int i = 1;
+    for (int& it : A) {
+        cin >> it;
+        B[it - 1] = i++;
+    }
+    bool flag = true;
+    for (int i = 0; i < N; i++) {
+        int j;
+        cin >> j;
+        flag &= (j == B[i]);
+        if (!flag) 
+            break;
+    }
+    cout << (flag ? "Yes" : "No") << endl;
     return 0;
 }

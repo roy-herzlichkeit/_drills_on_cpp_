@@ -6,6 +6,7 @@ using ull = unsigned long long;
 using pii = pair<int,int>;
 using vi = vector<int>;
 using vll = vector<ll>;
+using vull = vector<ull>;
 
 static inline void fast_io() {
     ios::sync_with_stdio(false);
@@ -47,7 +48,48 @@ int main() {
         freopen("a.in", "r", stdin);
     #endif
 
-    solver();
+    int N, K, M;
+    cin >> N >> K >> M;
+    vector<pair<pair<ull, ull>, ull>> gems;
+
+    gems.reserve(N);
+    ull max = 0;
+    for (int i = 0; i < N; ++i) {
+        ull col, val;
+        cin >> col >> val;
+        gems.push_back({{val, col}, ull(i)});
+        if (col > max) 
+            max = col;
+    }
+
+    sort(gems.begin(), gems.end(), [](const auto &a, const auto &b){
+        return a.first.first > b.first.first;
+    });
+
+    vector<bool> indexes(max + 1, true);
+    vector<bool> used(N, 0);
+    ull res = 0;
+
+    for (int i = 0; i < N && M > 0 && K > 0; i++) {
+        int col = int(gems[i].first.second);
+        if (indexes[col]) {
+            indexes[col] = false;
+            res += gems[i].first.first;
+            used[i] = 1;
+            K--;
+            M--;
+        }
+    }
+
+    for (int i = 0; i < N && K > 0; ++i) {
+        if (!used[i]) {
+            res += gems[i].first.first;
+            used[i] = 1;
+            K--;
+        }
+    }
+
+    cout << res << endl;
 
     return 0;
 }

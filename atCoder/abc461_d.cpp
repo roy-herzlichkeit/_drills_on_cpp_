@@ -47,7 +47,31 @@ int main() {
         freopen("a.in", "r", stdin);
     #endif
 
-    solver();
+    int H, W, K;
+    cin >> H >> W >> K;
+    vector<string> S(H);
+    for (string& Si : S)
+        cin >> Si;
+    ll res = 0;
+
+    for (int i = 0; i < W; i++) {
+        vector<int> col(H, 0);
+        for (int j = i; j < W; j++) {
+            for (int c = 0; c < H; c++)
+                col[c] += S[c][j] - '0';
+            map<ll, int> freq;
+            freq[0] = 1;
+            ll pref = 0;
+            for (int x : col) {
+                pref += x;
+                if (freq.count(pref - K))
+                    res += freq[pref - K];
+                freq[pref]++;
+            }
+        }
+    }
+
+    cout << res << endl;
 
     return 0;
 }
