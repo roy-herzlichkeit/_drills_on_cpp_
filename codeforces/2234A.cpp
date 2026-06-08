@@ -43,26 +43,19 @@ template<class T> inline void chmin(T &a, T b){ if(b < a) a = b; }
 template<class T> inline void chmax(T &a, T b){ if(b > a) a = b; }
 
 void solver() {
-    int n, k;
-    cin >> n >> k;
-    vi arr(n), bits(31);
-    for (int& it : arr) {
+    int n;
+    cin >> n;
+    vi a(n);
+    for (int& it : a)
         cin >> it;
-        for (int i = 0; i < 31; i++) 
-            bits[i] += ((it >> i) & 1);
+    sort(a.begin(), a.end(), greater<int>());
+    for (int i = 2; i < n; i++) {
+        if (a[i] != (a[i - 2] % a[i - 1])) {
+            cout << "-1\n";
+            return;
+        }   
     }
-    for (int i = 30; i >= 0; i--) {
-        int cost = n - bits[i];
-        if (cost <= k) {
-            k -= cost;
-            bits[i] = n;
-        }
-    }
-    uint32_t res = 0;
-    for (int i = 0; i < 31; i++) 
-        if (bits[i] == n) 
-            res |= 1u << i;
-    cout << res << '\n';
+    cout << a[0] << " " << a[1] << endl;
 }
 
 int main() {
