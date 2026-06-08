@@ -1,5 +1,5 @@
-CC = 1669H
-CCC = "Commit-XCVII"
+CC = 1742G
+CCC = "Commit-XCVIII"
 all:
 	g++ -std=c++17 -O2 -Wall -Wextra $(CC).cpp
 	./a.exe
