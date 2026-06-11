@@ -48,7 +48,7 @@ void solver() {
     if (n > m) {
         cout << "NO\n";
     } else {
-        switch (((n ^ 1) << 1 | (m ^ 1))) {
+        switch (((n % 2) << 1 | (m % 2))) {
             case 0:
                 cout << "YES\n";
                 for (int i = 0; i < n - 2; i++) 
