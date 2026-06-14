@@ -6,6 +6,7 @@ using ull = unsigned long long;
 using pii = pair<int,int>;
 using vi = vector<int>;
 using vll = vector<ll>;
+const int MAX = 1e6;
 
 static inline void fast_io() {
     ios::sync_with_stdio(false);
@@ -47,5 +48,35 @@ int main() {
         freopen("a.in", "r", stdin);
     #endif
 
-    return 0;
+    int N, D;
+    cin >> N >> D;
+
+    map<int, ull> diff;
+
+    for (int i = 0; i < N; i++) {
+        int S, T;
+        cin >> S >> T;
+        int R = T - D;
+        if (R >= S) {
+            diff[S]++;
+            diff[R + 1]--;
+        }
+    }
+
+    
+    ll cur = 0;
+    ull res = 0;
+
+    auto it = diff.begin();
+    while (it != diff.end()) {
+        cur += it->second;
+        auto nxt = next(it);
+        if (nxt == diff.end()) 
+            break;
+        long long len = nxt->first - it->first;
+        res += ull(len) * ull(cur) * ull((cur - 1) / 2);
+        it = nxt;
+    }
+
+    cout << res << '\n';
 }

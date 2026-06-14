@@ -47,5 +47,26 @@ int main() {
         freopen("a.in", "r", stdin);
     #endif
 
+    int N;
+    cin >> N;
+    vector<vi> received(N);
+
+    for (int i = 0; i < N; i++) {
+        int K;
+        cin >> K;
+        while (K--) {
+            int sent;
+            cin >> sent;
+            received[sent - 1].push_back(i + 1);
+        }
+    } 
+
+    for (int i = 0; i < N; i++) {
+        cout << int(received[i].size()) << " ";
+        for (const int& gift : received[i])
+            cout << gift << " ";
+        cout << endl;
+    }
+
     return 0;
 }

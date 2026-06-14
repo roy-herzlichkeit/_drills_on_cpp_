@@ -47,5 +47,26 @@ int main() {
         freopen("a.in", "r", stdin);
     #endif
 
+    int N;
+    cin >> N;
+
+    vector<int> Y(N + 1);
+
+    for (int i = 0; i < N; i++) {
+        int x, y;
+        cin >> x >> y;
+        Y[x] = y;
+    }
+
+    int res = 0, point = N + 1;
+
+    for (int x = 1; x <= N; x++) {
+        if (Y[x] < point) {
+            res++;
+            point = Y[x];
+        }
+    }
+
+    cout << res << '\n';
     return 0;
 }

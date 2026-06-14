@@ -47,5 +47,11 @@ int main() {
         freopen("a.in", "r", stdin);
     #endif
 
+    string S, res = "";
+    cin >> S;
+    for (const char& ch : S)
+        if (ch >= '0' && ch <= '9')
+            res.push_back(ch);
+    cout << res << endl;
     return 0;
 }
