@@ -41,30 +41,13 @@ template<class T> inline T ceil_div(T a, T b){ return (a + b - 1) / b; }
 template<class T> inline void chmin(T &a, T b){ if(b < a) a = b; }
 template<class T> inline void chmax(T &a, T b){ if(b > a) a = b; }
 
-inline static void solver() {
-    int a, b;
-    if(!(cin >> a >> b)) 
-        return;
-    int xorr;
-    switch (((a - 1) % 4)) {
-        case 0: 
-            xorr = a - 1;
-            break;
-        case 1:
-            xorr = 1;
-            break;
-        case 2:
-            xorr = a;
-            break;
-        default:
-            xorr = 0;
+inline int xor_upto(int n) {
+    switch (n & 3) {
+        case 0: return n;
+        case 1: return 1;
+        case 2: return n + 1;
+        default: return 0;
     }
-    if (xorr == b) 
-        cout << a << endl;
-    else if ((xorr ^ b) != a)
-        cout << a + 1 << endl;
-    else
-        cout << a + 2 << endl;
 }
 
 int main() {
@@ -74,8 +57,26 @@ int main() {
     #endif
 
     int T = 1;
-    if(!(cin >> T)) return 0;
-    while(T--) solver();
+    cin >> T;
+    while(T--) {
+        int a, b;
+        cin >> a >> b;
+        int xorr;
+        switch (((a - 1) % 4)) {
+            case 0: 
+                xorr = a - 1;
+                break;
+            case 1:
+                xorr = 1;
+                break;
+            case 2:
+                xorr = a;
+                break;
+            default:
+                xorr = 0;
+        }
+        cout << (a + (xorr != b) + ((xorr ^ b) == a)) << '\n';
+    }
 
     return 0;
 }
